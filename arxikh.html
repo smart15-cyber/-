@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Λίστα υποχρεώσεων</title>
+<style>
+body{background-color:#78d4f5;text-align:center;}
+button{
+    background-color:coral;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 20px 20px;
+    font-weight: 300;
+    font-size: 2rem;
+    cursor: pointer;
+    line-height: 1;
+    margin-top:10px;
+    margin-left:580px;
+}
+p{margin-top:90px;}
+.task {
+    background: white;
+    border-radius: 12px;
+    padding: 12px 20px;
+    margin: 10px auto;
+    max-width: 400px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.task {
+    transition: opacity 0.5s ease, transform 0.5s ease, margin 0.5s ease, padding 0.5s ease, max-height 0.5s ease;
+    max-height: 200px;
+    overflow: hidden;
+}
+.task.fading {
+    opacity: 0;
+    transform: scale(0.9);
+    max-height: 0;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.task input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.clear-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    margin-left: 200;
+    margin-top: 30px;
+}
+</style>
+</head>
+<body>
+
+<h1>Λίστα υποχρεώσεων</h1>
+<p>Οι υποχρεώσεις μου:</p>
+
+<div id="list"></div>
+
+<button type='submit' onclick="window.location.href='prosuhkh.html'">+</button>
+<br>
+<button class="clear-btn" onclick="clearAll()">Εκκαθάριση όλων</button>
+
+<script>
+function renderTasks() {
+  const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+
+  tasks.forEach(t => {
+    const div = document.createElement('div');
+    div.className = 'task';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.onclick = () => removeTask(t.id, div);
+
+    const textDiv = document.createElement('div');
+    textDiv.innerHTML = `<strong>${t.name}</strong><br>
+      ${t.date || ''} ${t.time || ''}<br>
+      ${t.notes || ''}`;
+
+    div.appendChild(checkbox);
+    div.appendChild(textDiv);
+    list.appendChild(div);
+  });
+}
+
+function removeTask(id, element) {
+  // Προσθέτουμε την κλάση που κάνει το fade-out εφέ
+  element.classList.add('fading');
+
+  // Μετά από 2 δευτερόλεπτα, διαγράφουμε πραγματικά την υποχρέωση
+  setTimeout(() => {
+    let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    tasks = tasks.filter(t => t.id !== id);
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    renderTasks();
+  }, 2000);
+}
+
+function clearAll() {
+  localStorage.setItem('tasks', '[]');
+  renderTasks();
+}
+
+renderTasks();
+</script>
+
+</body>
+</html>

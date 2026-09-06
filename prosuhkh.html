@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Προσθήκη υποχρέωσης</title>
+<style>
+.frame {
+  background: white;
+  border: 2px solid white;
+  border-radius: 14px;
+  padding: 150px;
+  max-width: 100px;
+  margin-top:100px;
+  margin-left:100px;
+}
+.frame1{margin-top:-100px; margin-left:-40px;}
+body{background-color:#78d4f5;}
+button{
+    background-color:coral;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    padding: 20px 20px;
+    font-weight: 300;
+    font-size: 1rem;
+    cursor: pointer;
+    line-height: 1;
+    margin-top:30px;
+    margin-left:180px;
+}
+</style>
+</head>
+<body>
+
+<div class='frame'>
+ <div class='frame1'>
+  <h4>Προσθήκη υποχρέωσης</h4>
+  <label for="name">Υποχρέωση</label>
+  <br><br>
+  <input type="text" id="name" placeholder="Γράψε την υποχρέωση σου">
+  <br><br>
+  <label for="date">Ημερομηνία υποχρέωσης</label>
+  <br><br>
+  <input type="date" id="date">
+  <br><br>
+  <label for="time">Ώρα υποχρέωσης</label>
+  <br><br>
+  <input type="time" id="time">
+  <br><br>
+  <label for="notes">Σημειώσεις</label>
+  <br><br>
+  <input type="text" id="notes" placeholder="Γράψε τις σημειώσεις για την υποχρέωση σου">
+  <button type='button' id='ok'>Προσθήκη</button>
+ </div>
+</div>
+
+<script>
+document.getElementById('ok').onclick = function() {
+  const task = {
+    id: Date.now(),
+    name: document.getElementById('name').value,
+    date: document.getElementById('date').value,
+    time: document.getElementById('time').value,
+    notes: document.getElementById('notes').value
+  };
+
+  if (!task.name) {
+    alert('Γράψε τουλάχιστον την υποχρέωσή σου!');
+    return;
+  }
+
+  let tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+  tasks.push(task);
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+
+  window.location.href = 'arxikh.html';
+};
+</script>
+
+</body>
+</html>
